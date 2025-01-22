@@ -7,7 +7,10 @@ const authRouter = express.Router()
 
 authRouter.post('/admin/create', async (req, res) => {
 	try {
-		validateSignUpData(req, res)
+		const validationResult = validateSignUpData(req, res)
+
+		if (validationResult) return
+
 		const { password } = req.body
 
 		const hashedPassword = await bcrypt.hash(password, 10)
@@ -27,7 +30,10 @@ authRouter.post('/admin/create', async (req, res) => {
 
 authRouter.post('/signup', async (req, res) => {
 	try {
-		validateSignUpData(req, res)
+		const validationResult = validateSignUpData(req, res)
+
+		if (validationResult) return
+
 		const { password } = req.body
 
 		const hashedPassword = await bcrypt.hash(password, 10)

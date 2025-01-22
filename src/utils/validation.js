@@ -20,4 +20,32 @@ const validateSignUpData = (req, res) => {
 	}
 }
 
-module.exports = { validateSignUpData }
+const validateEventCreation = (req, res) => {
+	const {
+		name,
+		description,
+		date,
+		location,
+		regParticipants,
+		maxParticipants,
+		category,
+		price,
+		photoUrl
+	} = req.body
+
+	if (
+		!name ||
+		!description ||
+		!date ||
+		!location ||
+		!regParticipants ||
+		!maxParticipants ||
+		!category ||
+		!price ||
+		!photoUrl
+	) {
+		return res.status(400).json({ message: 'Fill in all the details!' })
+	}
+}
+
+module.exports = { validateSignUpData, validateEventCreation }
