@@ -1,5 +1,6 @@
 const express = require('express')
 const { accessControl } = require('../middlewares/auth')
+const User = require('../models/users')
 const profileRouter = express.Router()
 
 profileRouter.get(
@@ -15,5 +16,14 @@ profileRouter.get(
 		}
 	}
 )
+
+profileRouter.get('/users', accessControl(['admin']), async (req, res) => {
+	try {
+		const users = await User.find({ role: 'user' })
+		res.json({ data: users, message: 'Fetched Users!' })
+	} catch (error) {
+		res.status(400).json({ message: error.message })
+	}
+})
 
 module.exports = profileRouter

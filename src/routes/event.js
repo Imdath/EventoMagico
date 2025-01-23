@@ -47,7 +47,7 @@ eventRouter.delete('/event/:id', accessControl(['admin']), async (req, res) => {
 		const event = await Event.findById(id)
 
 		if (!event) {
-			return res.status(404).json({ message: 'No event found' })
+			return res.status(404).json({ message: 'No event found!' })
 		}
 
 		await Event.findByIdAndDelete(id)
@@ -65,7 +65,7 @@ eventRouter.patch('/event/:id', accessControl(['admin']), async (req, res) => {
 		const event = await Event.findById(id)
 
 		if (!event) {
-			return res.status(404).json({ message: 'No event found' })
+			return res.status(404).json({ message: 'No event found!' })
 		}
 
 		Object.keys(req.body).forEach((field) => (event[field] = req.body[field]))
@@ -78,4 +78,23 @@ eventRouter.patch('/event/:id', accessControl(['admin']), async (req, res) => {
 	}
 })
 
+eventRouter.get(
+	'/event/:id',
+	accessControl(['admin', 'user']),
+	async (req, res) => {
+		try {
+			const { id } = req.params
+
+			const event = await Event.findById(id)
+
+			if (!event) {
+				return res.status(404).json({ message: 'No event found!' })
+			}
+
+			res.json({ data: event, message: 'Event fetched!' })
+		} catch (error) {
+			res.status(400).json({ message: error.message })
+		}
+	}
+)
 module.exports = eventRouter

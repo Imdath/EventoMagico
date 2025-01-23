@@ -3,9 +3,10 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const { validateSignUpData } = require('../utils/validation')
 const User = require('../models/users')
+const { accessControl } = require('../middlewares/auth')
 const authRouter = express.Router()
 
-authRouter.post('/admin/create', async (req, res) => {
+authRouter.post('/admin/create', accessControl(['admin']), async (req, res) => {
 	try {
 		const validationResult = validateSignUpData(req, res)
 
